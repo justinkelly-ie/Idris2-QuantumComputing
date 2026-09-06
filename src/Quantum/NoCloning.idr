@@ -2,7 +2,6 @@ module Quantum.NoCloning
 
 import Quantum.Qubit
 import Math.Singleton.Bit
-import Core.BoxInt
 import Math.Interfaces
 
 %default total
@@ -10,12 +9,12 @@ import Math.Interfaces
 ||| Linear consumption of a Qubit token (QTT 1 constraint)
 public export
 consumeLinearQubit : (1 q : Qubit) -> Ur Nat
-consumeLinearQubit (MkQubit w _ _ _ _) = MkUr (if isOne w then 1 else 0)
+consumeLinearQubit (MkQubitVal w _ _ _ _) = MkUr (if isOne w then 1 else 0)
 
 ||| Property: No-Cloning Theorem (Single-pass linear consumption)
 public export
 prop_noCloningLinearConstraint : Qubit -> Bool
-prop_noCloningLinearConstraint q =
-  let (MkUr w) = consumeLinearQubit q
-      expected = if isOne q.wireBit then 1 else 0
-  in w == expected
+prop_noCloningLinearConstraint (MkQubitVal w a0 p0 a1 p1) =
+  let (MkUr consumed) = consumeLinearQubit (MkQubitVal w a0 p0 a1 p1)
+      expected : Nat = if isOne w then 1 else 0
+  in consumed == expected

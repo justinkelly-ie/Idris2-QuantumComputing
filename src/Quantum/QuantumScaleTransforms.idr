@@ -1,5 +1,6 @@
 module Quantum.QuantumScaleTransforms
 
+import Math.Singleton.Bit
 import Core.ScaleTransform
 import Math.Dihedron.Dihedron
 import Quantum.Qubit
@@ -8,7 +9,7 @@ import Quantum.Qubit
 
 ||| ScaleTransform instance: Maps a Quantum Qubit state to its underlying Dihedron phase0
 public export
-ScaleTransform Qubit Dihedron where
+ScaleTransform (QubitVal elem) Dihedron where
   scaleTransform q = q.phase0
 
 ||| Property 1: Quantum Qubit to Dihedron Scale Transform Invariant

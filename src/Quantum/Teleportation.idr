@@ -25,7 +25,7 @@ Eq TeleportResult where
 public export
 teleportQubit : Qubit -> TeleportResult
 teleportQubit inputState =
-  let bobReceived = MkQubit One inputState.amp0 inputState.phase0 inputState.amp1 inputState.phase1
+  let bobReceived = MkQubitVal One inputState.amp0 inputState.phase0 inputState.amp1 inputState.phase1
   in MkTeleportResult inputState bobReceived
 
 ||| Property: Quantum Teleportation Fidelity Law (Fidelity == 1.0)
