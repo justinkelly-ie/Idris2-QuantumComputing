@@ -10,12 +10,12 @@ import Core.BoxInt
 ||| Pauli-X Operator acting on Dihedron phase (Bit Swap on Cb)
 public export
 pauliXPhase : Dihedron -> Dihedron
-pauliXPhase (MkDihedron a b c d) = MkDihedron b a c d
+pauliXPhase (MkDihedronVal a b c d) = MkDihedronVal b a c d
 
 ||| Pauli-Z Operator acting on Dihedron phase (Phase Flip on Cb)
 public export
 pauliZPhase : Dihedron -> Dihedron
-pauliZPhase (MkDihedron a b c d) = MkDihedron a (-b) c d
+pauliZPhase (MkDihedronVal a b c d) = MkDihedronVal a (-b) c d
 
 ||| Property 1: Pauli-X and Pauli-Z Anti-Commutation (XZ = -ZX)
 public export
@@ -43,10 +43,10 @@ prop_stabilizersCommute d =
 public export
 prop_anyonBraidPhaseShift : Bool
 prop_anyonBraidPhaseShift =
-  let eElectric = MkDihedron 0 1 0 0 -- i phase (charge)
-      mMagnetic = MkDihedron 0 0 1 0 -- j phase (flux)
+  let eElectric = MkDihedronVal 0 1 0 0 -- i phase (charge)
+      mMagnetic = MkDihedronVal 0 0 1 0 -- j phase (flux)
       braided   = mulDihedron eElectric mMagnetic -- i * j = -k
-      expected  = MkDihedron 0 0 0 (-1)
+      expected  = MkDihedronVal 0 0 0 (-1)
   in braided == expected
 
 ||| Proof witness exporter for Kitaev Toric Code

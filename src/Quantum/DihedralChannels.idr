@@ -11,8 +11,8 @@ import Core.BoxInt
 ||| Unitary Hadamard gate over Dihedron phase
 public export
 gateDihedronH : Dihedron -> Dihedron
-gateDihedronH (MkDihedron a b c d) =
-  MkDihedron (a + b) (a - b) c d
+gateDihedronH (MkDihedronVal a b c d) =
+  MkDihedronVal (a + b) (a - b) c d
 
 ||| Property 1: Hadamard Gate Involution (H² = 2·I)
 public export
@@ -25,14 +25,14 @@ public export
 prop_redSqueezeQuadranceConservation : Dihedron -> Bool
 prop_redSqueezeQuadranceConservation d =
   let qOrig = quadranceDihedron d
-      qTrans = quadranceDihedron (mulDihedron d (MkDihedron 0 0 1 0))
+      qTrans = quadranceDihedron (mulDihedron d (MkDihedronVal 0 0 1 0))
   in qOrig == -qTrans || qOrig == qTrans
 
 ||| Property 3: Green Nilpotent Phase Decay Bounds Landauer Heat Emission
 public export
 prop_greenNilpotentDecay : Dihedron -> Bool
 prop_greenNilpotentDecay val =
-  (scalarA (mulDihedron val (MkDihedron 1 0 0 1))) == (scalarA val) + (greenD val)
+  (scalarA (mulDihedron val (MkDihedronVal 1 0 0 1))) == (scalarA val) + (greenD val)
 
 ||| Proof witness exporter for Dihedral phase channels
 public export
