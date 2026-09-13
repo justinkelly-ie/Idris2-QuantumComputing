@@ -4,9 +4,6 @@ authors = "Justin Kelly"
 brief   = "Discrete Constructive Quantum Computing, Qubit Circuits, and Entanglement Engine."
 
 depends = base
-        , contrib
-        , Idris2-Multiset-Core
-        , Idris2-Multiset-Transform
         , Idris2-Geometry
         , idris2-Dihedron
 
