@@ -5,6 +5,7 @@ import Math.Dihedron.Dihedron
 import Core.BoxInt
 import Core.VexelMaxel
 import Core.UnixelFraction
+import Core.ScalePipeline.StreamAdjunction
 import Data.Vect
 
 %default total
@@ -96,3 +97,39 @@ prop_bellStateIsEntangled =
   in p00.num == 1 && unwrapUnixel p00.den == 2 &&
      p11.num == 1 && unwrapUnixel p11.den == 2 &&
      bell.amp01 == 0 && bell.amp10 == 0
+
+-----------------------------------------------------------------------
+-- COMONADIC QUANTUM WAVE CONTEXT & ENTANGLEMENT DENSITY
+-----------------------------------------------------------------------
+
+||| Comonadic Quantum Wave Context wrapping a focus payload and multi-qubit register.
+public export
+record QuantumWaveContext (a : Type) where
+  constructor MkQuantumWaveContext
+  focus : a
+  register : QubitRegister2
+
+public export
+Functor QuantumWaveContext where
+  map f (MkQuantumWaveContext x reg) = MkQuantumWaveContext (f x) reg
+
+||| Standard Comonad instance for QuantumWaveContext enabling extract, duplicate, extend.
+public export
+Comonad QuantumWaveContext where
+  extract (MkQuantumWaveContext x _) = x
+  duplicate ctx@(MkQuantumWaveContext _ reg) = MkQuantumWaveContext ctx reg
+
+||| Evaluates zero-allocation quantum entanglement density over a QuantumWaveContext.
+public export
+coevalEntanglementDensity : QuantumWaveContext a -> BoxInt
+coevalEntanglementDensity (MkQuantumWaveContext _ (MkRegister2 a00 a01 a10 a11)) =
+  -- Determinant |a00*a11 - a01*a10| measures 2-qubit concurrence entanglement
+  absBox ((a00 * a11) - (a01 * a10))
+
+||| Audit proof verifying maximal concurrence entanglement density on Bell State |Φ⁺⟩.
+public export
+auditQuantumComonadProof : Bool
+auditQuantumComonadProof =
+  let bellCtx = MkQuantumWaveContext "BellPhiPlus" bellStatePhiPlus
+      entDensity = coevalEntanglementDensity bellCtx
+  in unwrapBox entDensity == 1
