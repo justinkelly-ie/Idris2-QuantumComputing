@@ -4,6 +4,7 @@ import Math.Singleton.Bit
 import Math.Singleton.Sing
 import Math.Dihedron.Dihedron
 import Math.Dihedron.Subalgebras
+import Math.ChromoCategory
 import Core.BoxInt
 
 %default total
@@ -33,6 +34,15 @@ public export
 prop_greenNilpotentDecay : Dihedron -> Bool
 prop_greenNilpotentDecay val =
   (scalarA (mulDihedron val (MkDihedronVal 1 0 0 1))) == (scalarA val) + (greenD val)
+
+||| Quantum Density Matrix Channel acting on state space via sparse ChromoCategory Maxel transformations
+public export
+densityMatrixMaxelChannel : {d : Nat} -> {c : MetricColor} ->
+                            (0 space : VexelSpace d c) ->
+                            (densityMatrix : Maxel) ->
+                            Vexel -> Vexel
+densityMatrixMaxelChannel space densityMatrix stateVexel =
+  actMaxelVexel densityMatrix stateVexel
 
 ||| Proof witness exporter for Dihedral phase channels
 public export

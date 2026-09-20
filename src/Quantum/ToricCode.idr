@@ -4,8 +4,60 @@ import Math.Singleton.Bit
 import Math.Singleton.Sing
 import Math.Dihedron.Dihedron
 import Core.BoxInt
+import Math.Multiset
 
 %default total
+
+------------------------------------------------------------------------
+-- 1B. PURE MULTISET TORIC CODE ANYON EXCITATION BAG
+------------------------------------------------------------------------
+
+||| Topological Anyon Excitations in Kitaev Toric Code (e, m, \epsilon = e × m)
+public export
+data AnyonToken = ElectricCharge | MagneticFlux | FermionDyonic
+
+public export
+Eq AnyonToken where
+  ElectricCharge == ElectricCharge = True
+  MagneticFlux   == MagneticFlux   = True
+  FermionDyonic  == FermionDyonic  = True
+  _              == _              = False
+
+||| Fusion of Electric charge e and Magnetic flux m yields Fermion dyon \epsilon.
+public export
+fuseAnyons : AnyonToken -> AnyonToken -> AnyonToken
+fuseAnyons ElectricCharge MagneticFlux = FermionDyonic
+fuseAnyons MagneticFlux ElectricCharge = FermionDyonic
+fuseAnyons x _                         = x
+
+||| Multiset fusion transform over anyon excitation bag.
+public export
+fuseAnyonMultiset : Multiset BoxInt AnyonToken -> Multiset BoxInt AnyonToken
+fuseAnyonMultiset m =
+  let eCount = multiplicity ElectricCharge m
+      mCount = multiplicity MagneticFlux m
+      fCount = if eCount > intToBoxInt 0 && mCount > intToBoxInt 0 then intToBoxInt 1 else intToBoxInt 0
+      e' = eCount - fCount
+      m' = mCount - fCount
+      f  = multiplicity FermionDyonic m + fCount
+  in AddM ElectricCharge e' (AddM MagneticFlux m' (AddM FermionDyonic f ZeroM))
+
+||| Audits topological anyon fusion e × m -> \epsilon over multiset excitation bag:
+public export
+auditMultisetAnyonFusionProof : Bool
+auditMultisetAnyonFusionProof =
+  let initBag : Multiset BoxInt AnyonToken
+      initBag = AddM ElectricCharge (intToBoxInt 1) (AddM MagneticFlux (intToBoxInt 1) ZeroM)
+      fused   = fuseAnyonMultiset initBag
+  in multiplicity FermionDyonic fused == intToBoxInt 1 &&
+     multiplicity ElectricCharge fused == intToBoxInt 0 &&
+     multiplicity MagneticFlux fused == intToBoxInt 0
+
+
+
+------------------------------------------------------------------------
+-- 1. PAULI OPERATORS & STABILIZERS
+------------------------------------------------------------------------
 
 ||| Pauli-X Operator acting on Dihedron phase (Bit Swap on Cb)
 public export
@@ -33,6 +85,7 @@ public export
 plaquetteStabilizer : Dihedron -> Dihedron
 plaquetteStabilizer d = pauliZPhase (pauliZPhase (pauliZPhase (pauliZPhase d)))
 
+
 ||| Property 2: Stabilizer Commutativity [A_s, B_p] = 0 on Torus Surface
 public export
 prop_stabilizersCommute : Dihedron -> Bool
@@ -47,9 +100,10 @@ prop_anyonBraidPhaseShift =
       mMagnetic = MkDihedronVal 0 0 1 0 -- j phase (flux)
       braided   = mulDihedron eElectric mMagnetic -- i * j = -k
       expected  = MkDihedronVal 0 0 0 (-1)
-  in braided == expected
+  in braided == expected && auditMultisetAnyonFusionProof
 
 ||| Proof witness exporter for Kitaev Toric Code
 public export
 auditKitaevToricCodeProof : Bool
-auditKitaevToricCodeProof = True
+auditKitaevToricCodeProof = prop_anyonBraidPhaseShift
+

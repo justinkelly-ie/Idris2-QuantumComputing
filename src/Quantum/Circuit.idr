@@ -5,8 +5,14 @@ import Math.Singleton.Sing
 import Math.Dihedron.Dihedron
 import Core.BoxInt
 import Core.UnixelFraction
+import Core.Category.Adjunction
 
 %default total
+
+||| Category-Theoretic Quantum Adjunction (L ⊣ R) for CPTP Channels & Stinespring Dilation
+public export
+interface QuantumAdjunction (0 l : Type -> Type) (0 r : Type -> Type) where
+  cptpAdjunction : MultisetAdjunction l r
 
 public export
 record WaveToken where

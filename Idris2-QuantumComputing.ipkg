@@ -3,19 +3,19 @@ version = 0.1.0
 authors = "Justin Kelly"
 brief   = "Discrete Constructive Quantum Computing, Qubit Circuits, and Entanglement Engine."
 
-depends = base
-        , Idris2-Geometry
-        , idris2-Dihedron
-
+depends = Idris2-Dihedron, Idris2-Geometry, Idris2-Multiset-Core, Idris2-Multiset-Transform, base, linear
 sourcedir = "src"
 
-modules = Quantum.Qubit
-        , Quantum.Register
-        , Quantum.Circuit
-        , Quantum.Teleportation
-        , Quantum.NoCloning
-        , Quantum.LandauerErasure
-        , Quantum.DihedralChannels
-        , Quantum.ToricCode
-        , Quantum.DeutschJozsa
-        , Quantum.QuantumScaleTransforms
+modules = Quantum.Circuit,
+          Quantum.DeutschJozsa,
+          Quantum.DihedralChannels,
+          Quantum.LandauerErasure,
+          Quantum.NoCloning,
+          Quantum.QuantumScaleTransforms,
+          Quantum.Qubit,
+          Quantum.Register,
+          Quantum.StateStream,
+          Quantum.Teleportation,
+          Quantum.ToricCode
+
+

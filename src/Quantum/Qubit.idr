@@ -19,6 +19,8 @@ record QubitVal pVal where
   amp1    : BoxInt   -- Amplitude for |1⟩
   phase1  : Dihedron -- Phase vector for |1⟩
 
+
+
 public export
 Qubit : Type
 Qubit = QubitVal Bit
