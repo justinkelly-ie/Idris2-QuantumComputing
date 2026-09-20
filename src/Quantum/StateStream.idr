@@ -1,8 +1,10 @@
 module Quantum.StateStream
 
 import public Core.BoxInt
+import public Core.Order.Preorder
 import public Math.OnSeq.FusedStream
 import public Quantum.Qubit
+import public Quantum.Circuit
 import Data.Fuel
 
 %default total
@@ -64,3 +66,23 @@ auditQuantumStateStreamProof =
   let items = [(ZeroState, intToBoxInt 3), (OneState, intToBoxInt 4)]
       expVal = fusedExpectationValue (limit 100) items
   in unwrapBox expVal == 25
+
+--------------------------------------------------------------------------------
+-- 3. TRACE-PRESERVING QUANTUM STATE STREAM TRANSPORT
+--------------------------------------------------------------------------------
+
+||| A Deforested Quantum State Stream carrying a compile-time trace preservation witness (Tr(rho) = totalTrace).
+public export
+record TracePreservingStateStream (t0 : Nat) (t1 : Nat) (totalTrace : Nat) where
+  constructor MkTracePreservingStateStream
+  streamData : FusedStream QuantumStateToken
+  0 tracePrf : TracePreservingChannel t0 t1 totalTrace
+
+||| Constructs a deforested Quantum State Stream with a compile-time trace preservation witness.
+public export
+makeTracePreservingStateStream : (t0 : Nat) -> (t1 : Nat) -> (totalTrace : Nat) ->
+                                 (0 prf : TracePreservingChannel t0 t1 totalTrace) ->
+                                 List (QubitBasis, BoxInt) ->
+                                 TracePreservingStateStream t0 t1 totalTrace
+makeTracePreservingStateStream t0 t1 tot prf items =
+  MkTracePreservingStateStream (unfoldQuantumStateStream items) prf
