@@ -1,9 +1,9 @@
-package Idris2-QuantumComputing
+package FinSc-QuantumComputing
 version = 0.1.0
 authors = "Justin Kelly"
 brief   = "Discrete Constructive Quantum Computing, Qubit Circuits, and Entanglement Engine."
 
-depends = Idris2-Dihedron, Idris2-Geometry, Idris2-Multiset-Core, Idris2-Multiset-Transform, base, linear
+depends = FinSc-Dihedron, FinSc-Geometry, FinSc-Multiset-Core, FinSc-Multiset-Transform, base, linear
 sourcedir = "src"
 
 modules = QuantumComputing,

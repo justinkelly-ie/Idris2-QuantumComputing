@@ -1,11 +1,11 @@
-# Idris2-QuantumComputing
+# FinSc-QuantumComputing
 
 [![Idris 2 Verification](https://img.shields.io/badge/Idris_2-0.8.0-blue.svg)](https://www.idris-lang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **Layer 6b Quantum Logic Gates, Toric Code & Entanglement Area Laws for Idris 2**
 
-`Idris2-QuantumComputing` forms **Layer 6b** of the 10-layer constructive non-linear multiset science framework. It formalizes discrete qubit states ($\alpha|0\rangle + \beta|1\rangle$ over exact rational fields), multi-qubit registers, quantum gates ($H, X, Y, Z, \text{CNOT}, \text{Toffoli}, S, T$), quantum teleportation, QTT No-Cloning theorem, Kitaev Toric Code error correction, Deutsch-Jozsa algorithm, and Landauer erasure bounds.
+`FinSc-QuantumComputing` forms **Layer 6b** of the 10-layer constructive non-linear multiset science framework. It formalizes discrete qubit states ($\alpha|0\rangle + \beta|1\rangle$ over exact rational fields), multi-qubit registers, quantum gates ($H, X, Y, Z, \text{CNOT}, \text{Toffoli}, S, T$), quantum teleportation, QTT No-Cloning theorem, Kitaev Toric Code error correction, Deutsch-Jozsa algorithm, and Landauer erasure bounds.
 
 ---
 
@@ -38,8 +38,8 @@
 ## 🚀 Building & Installing
 
 ```bash
-idris2 --build Idris2-QuantumComputing.ipkg
-idris2 --install Idris2-QuantumComputing.ipkg
+idris2 --build FinSc-QuantumComputing.ipkg
+idris2 --install FinSc-QuantumComputing.ipkg
 ```
 
 ---
